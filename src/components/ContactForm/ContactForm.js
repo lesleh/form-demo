@@ -6,6 +6,7 @@ import {
   Text,
   TextField,
   TextArea,
+  Checkbox,
 } from "@simplybusiness/mobius-simplybusiness";
 import { ErrorMessage } from "@hookform/error-message";
 
@@ -67,6 +68,22 @@ function ContactForm() {
                 <Error name="lastName" />
               </Box>
             </Flex>
+            <TextField
+              label="Email address"
+              {...formMethods.register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /.@./,
+                  message: "Email is invalid",
+                },
+              })}
+              onChange={(value) => formMethods.setValue("email", value)}
+              validationState={validationState(
+                formMethods.formState.errors,
+                "email"
+              )}
+            />
+            <Error name="email" />
             {/* TODO: Rows doesn't work */}
             {/*
               Warning: Function components cannot be given refs. Attempts to
@@ -76,7 +93,7 @@ function ContactForm() {
             */}
             <TextArea
               label="Message"
-              rows="10"
+              rows={100}
               {...formMethods.register("message", {
                 required: "Message is required",
               })}
@@ -85,6 +102,16 @@ function ContactForm() {
                 formMethods.formState.errors.message && "invalid"
               }
             />
+            <Error name="message" />
+            <Checkbox
+              label="I agree to the terms and conditions"
+              {...formMethods.register("agree", {
+                required: "You must agree to the terms and conditions",
+              })}
+              onChange={(value) => formMethods.setValue("agree", value)}
+              validationState={formMethods.formState.errors.agree && "invalid"}
+            />
+            <Error name="agree" />
             <Flex gap="size-20">
               <Button type="submit" width="100%">
                 Send
