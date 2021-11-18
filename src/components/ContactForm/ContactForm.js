@@ -30,28 +30,34 @@ function ContactForm() {
       <form onSubmit={formMethods.handleSubmit(onSubmit)}>
         <FormProvider {...formMethods}>
           <Flex gap="size-20" flexDirection="column">
-            <TextField
-              label="First name"
-              {...formMethods.register("firstName", {
-                required: "First name is required",
-              })}
-              onChange={(value) => formMethods.setValue("firstName", value)}
-              validationState={
-                formMethods.formState.errors.firstName && "invalid"
-              }
-            />
-            <Error name="firstName" />
-            <TextField
-              label="Last name"
-              {...formMethods.register("lastName", {
-                required: "Last name is required",
-              })}
-              onChange={(value) => formMethods.setValue("lastName", value)}
-              validationState={
-                formMethods.formState.errors.firstName && "invalid"
-              }
-            />
-            <Error name="lastName" />
+            <Flex gap="size-20">
+              <Box flexBasis="100%">
+                <TextField
+                  label="First name"
+                  {...formMethods.register("firstName", {
+                    required: "First name is required",
+                  })}
+                  onChange={(value) => formMethods.setValue("firstName", value)}
+                  validationState={
+                    formMethods.formState.errors.firstName && "invalid"
+                  }
+                />
+                <Error name="firstName" />
+              </Box>
+              <Box flexBasis="100%">
+                <TextField
+                  label="Last name"
+                  {...formMethods.register("lastName", {
+                    required: "Last name is required",
+                  })}
+                  onChange={(value) => formMethods.setValue("lastName", value)}
+                  validationState={
+                    formMethods.formState.errors.firstName && "invalid"
+                  }
+                />
+                <Error name="lastName" />
+              </Box>
+            </Flex>
             {/* TODO: Rows doesn't work */}
             {/* TODO: TextArea appears broken, error about refs */}
             <TextArea
