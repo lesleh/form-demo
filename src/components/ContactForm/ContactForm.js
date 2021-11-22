@@ -48,7 +48,7 @@ const useYupValidationResolver = (validationSchema) =>
 const validationSchema = yup.object({
   firstName: yup.string().required("Required"),
   lastName: yup.string().required("Required"),
-  email: yup.string().required("Required"),
+  email: yup.string().email("Must be a valid email").required("Required"),
   subject: yup.string().required("Required"),
   subjectOther: yup
     .string()
