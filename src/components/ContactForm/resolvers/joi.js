@@ -2,6 +2,8 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import { messages } from "./messages";
 
+const localeMessages = messages.en;
+
 const formatMessages = (messages) => {
   return Object.keys(messages).reduce((acc, key) => {
     acc[`string.${key}`] = messages[key];
@@ -12,26 +14,26 @@ const formatMessages = (messages) => {
 const schema = Joi.object({
   firstName: Joi.string()
     .required()
-    .messages(formatMessages(messages.en.firstName)),
+    .messages(formatMessages(localeMessages.firstName)),
   lastName: Joi.string()
     .required()
-    .messages(formatMessages(messages.en.lastName)),
+    .messages(formatMessages(localeMessages.lastName)),
   email: Joi.string()
     .email({ tlds: { allow: false } })
     .required()
-    .messages(formatMessages(messages.en.email)),
+    .messages(formatMessages(localeMessages.email)),
   subject: Joi.string()
     .required()
-    .messages(formatMessages(messages.en.subject)),
+    .messages(formatMessages(localeMessages.subject)),
   subjectOther: Joi.string().when("subject", {
     is: "other",
     then: Joi.string().required(),
   }),
   message: Joi.string().required().messages({
-    "any.required": messages.en.message.empty,
+    "any.required": localeMessages.message.empty,
   }),
   agree: Joi.boolean().invalid(false).messages({
-    "any.invalid": messages.en.agree.invalid,
+    "any.invalid": localeMessages.agree.invalid,
   }),
 });
 

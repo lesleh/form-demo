@@ -2,23 +2,25 @@ import { useCallback } from "react";
 import * as yup from "yup";
 import { messages } from "./messages";
 
+const localeMessages = messages.en;
+
 const validationSchema = yup.object({
-  firstName: yup.string().required(messages.en.firstName.empty),
-  lastName: yup.string().required(messages.en.lastName.empty),
+  firstName: yup.string().required(localeMessages.firstName.empty),
+  lastName: yup.string().required(localeMessages.lastName.empty),
   email: yup
     .string()
-    .email(messages.en.email.email)
-    .required(messages.en.email.empty),
-  subject: yup.string().required(messages.en.subject.empty),
+    .email(localeMessages.email.email)
+    .required(localeMessages.email.empty),
+  subject: yup.string().required(localeMessages.subject.empty),
   subjectOther: yup
     .string()
     .ensure()
     .when("subject", {
       is: (subject) => subject === "other",
-      then: yup.string().required(messages.en.subjectOther.empty),
+      then: yup.string().required(localeMessages.subjectOther.empty),
     }),
-  message: yup.string().required(messages.en.message.empty),
-  agree: yup.boolean().oneOf([true], messages.en.agree.invalid),
+  message: yup.string().required(localeMessages.message.empty),
+  agree: yup.boolean().oneOf([true], localeMessages.agree.invalid),
 });
 
 export const useYupValidationResolver = () =>
