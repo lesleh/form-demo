@@ -1,20 +1,24 @@
 import { useCallback } from "react";
 import * as yup from "yup";
+import { messages } from "./messages";
 
 const validationSchema = yup.object({
-  firstName: yup.string().required("Required"),
-  lastName: yup.string().required("Required"),
-  email: yup.string().email("Must be a valid email").required("Required"),
-  subject: yup.string().required("Required"),
+  firstName: yup.string().required(messages.en.firstName.empty),
+  lastName: yup.string().required(messages.en.lastName.empty),
+  email: yup
+    .string()
+    .email(messages.en.email.email)
+    .required(messages.en.email.empty),
+  subject: yup.string().required(messages.en.subject.empty),
   subjectOther: yup
     .string()
     .ensure()
     .when("subject", {
       is: (subject) => subject === "other",
-      then: yup.string().required("Required"),
+      then: yup.string().required(messages.en.subjectOther.empty),
     }),
-  message: yup.string().required("Required"),
-  agree: yup.boolean().oneOf([true], "Required"),
+  message: yup.string().required(messages.en.message.empty),
+  agree: yup.boolean().oneOf([true], messages.en.agree.invalid),
 });
 
 export const useYupValidationResolver = () =>

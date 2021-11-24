@@ -32,7 +32,7 @@ const validationState = (errors, name) => {
   return "valid";
 };
 
-const RESOLVER_TYPE = "joi";
+const RESOLVER_TYPE = "yup";
 
 function ContactForm() {
   let resolver;
