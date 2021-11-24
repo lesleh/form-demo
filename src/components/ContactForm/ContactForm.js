@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import {
   Box,
@@ -12,54 +11,8 @@ import {
   Option,
 } from "@simplybusiness/mobius-simplybusiness";
 import { ErrorMessage } from "@hookform/error-message";
-import * as yup from "yup";
-
-const useYupValidationResolver = (validationSchema) =>
-  useCallback(
-    async (data) => {
-      try {
-        const values = await validationSchema.validate(data, {
-          abortEarly: false,
-        });
-
-        return {
-          values,
-          errors: {},
-        };
-      } catch (errors) {
-        return {
-          values: {},
-          errors: errors.inner.reduce(
-            (allErrors, currentError) => ({
-              ...allErrors,
-              [currentError.path]: {
-                type: currentError.type ?? "validation",
-                message: currentError.message,
-              },
-            }),
-            {}
-          ),
-        };
-      }
-    },
-    [validationSchema]
-  );
-
-const validationSchema = yup.object({
-  firstName: yup.string().required("Required"),
-  lastName: yup.string().required("Required"),
-  email: yup.string().email("Must be a valid email").required("Required"),
-  subject: yup.string().required("Required"),
-  subjectOther: yup
-    .string()
-    .ensure()
-    .when("subject", {
-      is: (subject) => subject === "other",
-      then: yup.string().required("Required"),
-    }),
-  message: yup.string().required("Required"),
-  agree: yup.boolean().oneOf([true], "Required"),
-});
+import { useYupValidationResolver } from "./resolvers/yup";
+import { createJoiResolver } from "./resolvers/joi";
 
 const Error = ({ name }) => (
   <ErrorMessage
@@ -79,8 +32,16 @@ const validationState = (errors, name) => {
   return "valid";
 };
 
+const RESOLVER_TYPE = "joi";
+
 function ContactForm() {
-  const resolver = useYupValidationResolver(validationSchema);
+  let resolver;
+  if (RESOLVER_TYPE === "yup") {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    resolver = useYupValidationResolver();
+  } else {
+    resolver = createJoiResolver();
+  }
   const formMethods = useForm({
     resolver,
     reValidateMode: "onBlur",
